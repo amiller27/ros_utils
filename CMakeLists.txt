@@ -1,10 +1,17 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ros_utils)
 
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror ${CMAKE_CXX_FLAGS}")
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(
+    catkin REQUIRED
+    geometry_msgs
+    roscpp
+    tf2_ros
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -96,8 +103,8 @@ find_package(catkin REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES ros_utils
+  INCLUDE_DIRS include
+  LIBRARIES ros_utils
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -108,17 +115,23 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
+include_directories(
+  include ${catkin_INCLUDE_DIRS}
+)
 
 ## Declare a C++ library
-# add_library(ros_utils
-#   src/${PROJECT_NAME}/ros_utils.cpp
-# )
+add_library(ros_utils
+    src/${PROJECT_NAME}/SafeTransformWrapper.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(ros_utils ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_utils ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(ros_utils
+  ${catkin_LIBRARIES}
+)
 
 ## Declare a C++ executable
 # add_executable(ros_utils_node src/ros_utils_node.cpp)
