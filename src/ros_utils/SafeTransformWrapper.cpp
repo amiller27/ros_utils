@@ -38,10 +38,10 @@ bool SafeTransformWrapper::getTransformAtTime(
             }
 
             // Check if the transform from map to quad can be made right now
-            if (tf_buffer_.canTransform(source_frame, target_frame, time))
+            if (tf_buffer_.canTransform(target_frame, source_frame, time))
             {
                 // Get the transform
-                transform = tf_buffer_.lookupTransform(source_frame, target_frame, time);
+                transform = tf_buffer_.lookupTransform(target_frame, source_frame, time);
                 return true;
             }
 
