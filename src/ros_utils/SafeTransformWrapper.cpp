@@ -30,10 +30,23 @@ bool SafeTransformWrapper::getTransformAtTime(
         {
             if (ros::Time::now() > start_time + timeout)
             {
-                ROS_ERROR_STREAM("Transform timed out ("
-                              << "current time: " << ros::Time::now() << ", "
-                              << "request time: " << start_time
-                              << ")");
+                geometry_msgs::TransformStamped last_tf;
+                if (tf_buffer_.canTransform(target_frame, source_frame, ros::Time(0))) {
+                    last_tf = tf_buffer_.lookupTransform(target_frame, source_frame, ros::Time(0));
+                    ROS_ERROR_STREAM("Transform timed out ("
+                                  << "current time: " << ros::Time::now() << ", "
+                                  << "request time: " << start_time
+                                  << ") for frame " << source_frame
+                                  << " to frame " << target_frame
+                                  << ", latest available at " << last_tf.header.stamp);
+                } else {
+                    ROS_ERROR_STREAM("Transform timed out ("
+                                  << "current time: " << ros::Time::now() << ", "
+                                  << "request time: " << start_time
+                                  << ") for frame " << source_frame
+                                  << " to frame " << target_frame
+                                  << ", none available");
+                }
                 return false;
             }
 
