@@ -9,7 +9,7 @@ namespace ros_utils {
 class ParamUtils {
   public:
     template<typename T>
-    static T getParam(ros::NodeHandle& nh, const std::string& name)
+    static T getParam(const ros::NodeHandle& nh, const std::string& name)
     {
         T val;
         ROS_ASSERT_MSG(nh.getParam(name, val),
