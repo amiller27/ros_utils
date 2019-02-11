@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ros_utils)
 
+add_definitions(-std=c++11)
+
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DROS_ASSERT_ENABLED")
 
